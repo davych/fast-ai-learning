@@ -1,0 +1,5 @@
+/venv
+/course1/bird_or_not
+
+*.pkl
+*.pth
