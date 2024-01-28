@@ -1,5 +1,12 @@
 /venv
 /course1/bird_or_not
+/hf1/downloads
+/hf1/glue
+/hf1/hub
+/hf1/modules
+/hf1/model.*
+/hf1/*.json
+/hf1/*.txt
 
 *.pkl
 *.pth
