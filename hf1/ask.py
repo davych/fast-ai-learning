@@ -11,4 +11,4 @@ tokenizer = AutoTokenizer.from_pretrained('./hf1') # 替换为你实际使用的
 
 pipe = pipeline('sentiment-analysis', model=model, tokenizer=tokenizer)
 
-print(pipe('I like you. hello.'))
+print(pipe('Around 0335 GMT , Tab shares were up 19 cents , or 4.4 % , at A $ 4.56 , having earlier set a record high of A $ 4.57 .Tab shares jumped 20 cents , or 4.6 % , to set a record closing high at A $ 4.57 .'))

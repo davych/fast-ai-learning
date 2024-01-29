@@ -6,6 +6,7 @@ os.environ['HF_DATASETS_CACHE'] = './hf1'
 os.environ['HF_TOKEN'] = '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'
 from datasets import load_dataset
 from transformers import AutoTokenizer, DataCollatorWithPadding
+import torch
 
 raw_datasets = load_dataset("glue", "mrpc")
 checkpoint = "bert-base-uncased"
@@ -26,10 +27,10 @@ tokenized_datasets.set_format("torch")
 from torch.utils.data import DataLoader
 
 train_dataloader = DataLoader(
-    tokenized_datasets["train"], shuffle=True, batch_size=8, collate_fn=data_collator
+    tokenized_datasets["train"], shuffle=True, batch_size=32, collate_fn=data_collator
 )
 eval_dataloader = DataLoader(
-    tokenized_datasets["validation"], batch_size=8, collate_fn=data_collator
+    tokenized_datasets["validation"], batch_size=32, collate_fn=data_collator
 )
 
 from accelerate import Accelerator
@@ -44,7 +45,7 @@ train_dl, eval_dl, model, optimizer = accelerator.prepare(
     train_dataloader, eval_dataloader, model, optimizer
 )
 
-num_epochs = 1
+num_epochs = 3
 num_training_steps = num_epochs * len(train_dl)
 lr_scheduler = get_scheduler(
     "linear",
@@ -55,6 +56,10 @@ lr_scheduler = get_scheduler(
 
 progress_bar = tqdm(range(num_training_steps))
 
+print(torch.cuda.is_available())
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+print(device)
+model.to(device)
 model.train()
 for epoch in range(num_epochs):
     for batch in train_dl:
